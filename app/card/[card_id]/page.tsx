@@ -111,16 +111,16 @@ export default function CardPage() {
           className="absolute bg-gray-400 -bottom-12 left-1/2 transform -translate-x-1/2 flex items-center justify-center w-24 h-24 rounded-full border-2"
           style={{ borderColor: cardData.borderColor || "#fff" }}
         >
-         {getInitials(cardData?.cardOwner || "")}
+         {getInitials(cardData?.cardInfo.name || "")}
             
         </div>
       </div>
   
       {/* Profile Info */}
       <div className="pt-12 pb-6 px-6 text-center">
-        <h2 className="text-2xl text-gray-900 ">{cardData.cardOwner || "Jane Cooper"}</h2>
-        <p className="text-md text-gray-600">CEO & Founder</p>
-        <p className="text-md text-gray-600">Stag Technologies</p>
+        <h2 className="text-2xl text-gray-900 ">{cardData.cardInfo.name || "Jane Cooper"}</h2>
+        <p className="text-md text-gray-600">{cardData.cardInfo.headline}</p>
+        <p className="text-md text-gray-600">{cardData.cardInfo.location}</p>
   
         {/* Open Hours */}
         <div className="mt-5">
@@ -144,10 +144,10 @@ export default function CardPage() {
     <img src="https://img.icons8.com/ios-filled/50/26e07f/phone.png" className="w-6 h-6 mr-3" />
     <div>
       <p className="text-gray-800 font-semibold">Phone</p>
-      <p className="text-sm text-gray-600">+91 {cardData.phone || "8080973373"}</p>
+      <p className="text-sm text-gray-600">+91 {cardData.contactInfo.phone || "8080973373"}</p>
     </div>
   </div>
-  <a href={`tel:+91${cardData.phone || "8080973373"}`} target="_blank" rel="noopener noreferrer">
+  <a href={`tel:+91${cardData.contactInfo.phone || "8080973373"}`} target="_blank" rel="noopener noreferrer">
     <ExternalLink className="w-5 h-5 text-gray-500" />
   </a>
 </div>
@@ -158,10 +158,10 @@ export default function CardPage() {
     <img src="https://img.icons8.com/ios-filled/50/4e91fc/new-post.png" className="w-6 h-6 mr-3" />
     <div>
       <p className="text-gray-800 font-semibold">Email</p>
-      <p className="text-sm text-gray-600">{cardData.email || "demo@email.com"}</p>
+      <p className="text-sm text-gray-600">{cardData.contactInfo.email || "demo@email.com"}</p>
     </div>
   </div>
-  <a href={`mailto:${cardData.email || "demo@email.com"}`} target="_blank" rel="noopener noreferrer">
+  <a href={`mailto:${cardData.contactInfo.email || "demo@email.com"}`} target="_blank" rel="noopener noreferrer">
     <ExternalLink className="w-5 h-5 text-gray-500" />
   </a>
 </div>
@@ -172,10 +172,10 @@ export default function CardPage() {
     <img src="https://img.icons8.com/ios-filled/50/0077b5/linkedin.png" className="w-6 h-6 mr-3" />
     <div>
       <p className="text-gray-800 font-semibold">LinkedIn</p>
-      <p className="text-sm text-gray-600 truncate">{cardData.linkedin || "linkedin.com/in/demo"}</p>
+      <p className="text-sm text-gray-600 truncate">{cardData.contactInfo.linkedin || "linkedin.com/in/demo"}</p>
     </div>
   </div>
-  <a href={cardData.linkedin || "#"} target="_blank" rel="noopener noreferrer">
+  <a href={cardData.contactInfo.linkedin || "#"} target="_blank" rel="noopener noreferrer">
     <ExternalLink className="w-5 h-5 text-gray-500" />
   </a>
 </div>
@@ -188,30 +188,44 @@ export default function CardPage() {
   <div className="space-y-2">
 
     {/* Instagram */}
-    {cardData.instagram && (
+    {cardData.socialMedia?.instagram && (
+      <div className="flex items-center justify-between bg-white rounded-xl p-3 text-gray-800 font-medium shadow hover:bg-gray-200 transition">
+      <div className="flex items-center gap-2">
+        <Instagram className="w-5 h-5 text-pink-500" />
+        <span>Instagram</span>
+      </div>
+      <a href={cardData.socialMedia.instagram} target="_blank" rel="noopener noreferrer">
+        <ExternalLink className="w-5 h-5 text-gray-500" />
+      </a>
+      </div>
+    )}
+
+    {/* Facebook */}
+    {cardData.socialMedia?.facebook && (
+      <div className="flex items-center justify-between bg-white rounded-xl p-3 text-gray-800 font-medium shadow hover:bg-gray-200 transition">
+      <div className="flex items-center gap-2">
+        <Facebook className="w-5 h-5 text-blue-600" />
+        <span>Facebook</span>
+      </div>
+      <a href={cardData.socialMedia.facebook} target="_blank" rel="noopener noreferrer">
+        <ExternalLink className="w-5 h-5 text-gray-500" />
+      </a>
+      </div>
+    )}
+
+    {/* Twitter */}
+    {cardData.socialMedia?.twitter && (
       <div className="flex items-center justify-between bg-white rounded-xl p-3 text-gray-800 font-medium shadow hover:bg-gray-200 transition">
         <div className="flex items-center gap-2">
-          <Instagram className="w-5 h-5 text-pink-500" />
-          <span>Instagram</span>
+          <img src="https://img.icons8.com/ios-filled/50/1DA1F2/twitter.png" className="w-5 h-5" />
+          <span>Twitter</span>
         </div>
-        <a href={cardData.instagram} target="_blank" rel="noopener noreferrer">
+        <a href={cardData.socialMedia.twitter} target="_blank" rel="noopener noreferrer">
           <ExternalLink className="w-5 h-5 text-gray-500" />
         </a>
       </div>
     )}
 
-    {/* Facebook */}
-    {cardData.facebook && (
-      <div className="flex items-center justify-between bg-white rounded-xl p-3 text-gray-800 font-medium shadow hover:bg-gray-200 transition">
-        <div className="flex items-center gap-2">
-          <Facebook className="w-5 h-5 text-blue-600" />
-          <span>Facebook</span>
-        </div>
-        <a href={cardData.facebook} target="_blank" rel="noopener noreferrer">
-          <ExternalLink className="w-5 h-5 text-gray-500" />
-        </a>
-      </div>
-    )}
 
   </div>
 </div>

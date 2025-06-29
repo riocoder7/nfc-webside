@@ -7,13 +7,13 @@ import { getAuth } from "firebase/auth";
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAVCO68km4dVKDkSSP4V5QyBknbtoBgPWE",
-    authDomain: "letcode-c0bf0.firebaseapp.com",
-    projectId: "letcode-c0bf0",
-    storageBucket: "letcode-c0bf0.firebasestorage.app",
-    messagingSenderId: "523512842358",
-    appId: "1:523512842358:web:c0bce7ff3e163ea9953757",
-    measurementId: "G-DTRDE7Y7NX"
+  apiKey: "AIzaSyByDFqFW6F2O2gW4g0wVdOIpR0aUSyd3S0",
+  authDomain: "nxt-card-app.firebaseapp.com",
+  projectId: "nxt-card-app",
+  storageBucket: "nxt-card-app.firebasestorage.app",
+  messagingSenderId: "587908615935",
+  appId: "1:587908615935:web:c70e0ebf651812f4d5c6ca",
+  measurementId: "G-XSN56RBS9D"
   };
 
 
