@@ -92,7 +92,7 @@ export default function Page() {
     <div className=" flex justify-center items-center bg-gray-50">
       <div className="w-[420px] bg-[#111922]  p-2"> Dashboard 
         
-      <EditCardDetails cardData={cardData}  userLogin={userLogin}/>
+      <EditCardDetails cardData={cardData}  userLogin={userLogin} userId={userData.uid} />
 
        <EditContactForm cardData={cardData}  userLogin={userLogin}/>
 
