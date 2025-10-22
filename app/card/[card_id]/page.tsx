@@ -2,15 +2,20 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/config/firebase_config";
-import { ExternalLink, Nfc,Instagram, Facebook, } from 'lucide-react';
-
+import { auth, db } from "@/config/firebase_config";
+import { ExternalLink, Nfc,Instagram, Facebook, SquarePen, CirclePlus, ChevronsDown, Router} from 'lucide-react';
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+import { app } from "../../../config/firebase_config"; 
+import Image from "next/image"; 
+import { useRouter } from "next/navigation";
 
 export default function CardPage() {
+  const router = useRouter();
   const { card_id } = useParams();
   const [cardData, setCardData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isUnactive, setIsUnactive] = useState(false);
+  const [userLogin, setUserLogin] = useState<any>(null);
 
   const getInitials = (fullName: string): string => {
     if (!fullName) return "NA";
@@ -24,6 +29,18 @@ export default function CardPage() {
     return (words[0][0] + words[1][0]).toUpperCase(); // First letters of first and second words
   };
   
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+       setUserLogin(false);
+      } else {
+        setUserLogin(true);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
 
   useEffect(() => {
     if (!card_id) return;
@@ -88,151 +105,165 @@ export default function CardPage() {
     );
   }
 
-  // // Avatar initials
-  // const initials = cardData.cardOwner
-  //   .split(" ")
-  //   .map((n: string) => n[0])
-  //   .join("")
-  //   .toUpperCase();
+
 
   return (
-    <div className="min-h-screen bg-white flex justify-center items-center px-2 py-5">
-    <div className="bg-gray-100  rounded-3xl w-full max-w-md  overflow-hidden">
+    <div className="min-h-screen bg-white flex justify-center items-center  ">
+    <div className="bg-[#111922]   w-full max-w-md  overflow-hidden p-2 shadow-lg">
   
-      {/* Header with logo and profile */}
-      <div className="relative">
-        {/* Card Header BG */}
-        <div className="bg-neutral-900 h-52 flex gap-2 items-center justify-center rounded-b-3xl">
-            <h1 className="text-white font-semibold text-2xl tracking-wider">NXTCard</h1>
-          <Nfc />
+
+      <div className="w-full h-56 border border-amber-50 rounded-2xl  my-20 mb-10 bg-white" > 
+          <div className="flex justify-center"> 
+          <div className="w-36 h-36 bg-gray-400 rounded-full border border-white border-w-2 my-[-60px] flex justify-center items-center"> 
+            <h1 className=" text-white text-3xl ">{getInitials(cardData?.cardInfo.name || "")}</h1>
+          </div>
+          </div>
+
+          <div className="flex flex-col justify-center items-center mt-12">
+          <h1 className=" text-black text-2xl font-bold mt-4">{cardData.cardInfo.name || "Jane Cooper"}</h1>
+          <p className=" text-black text-sm mt-1"> {cardData.cardInfo.headline|| "Web Developer | Designer"}</p>
+          <p className="text-black text-sm mt-2">{cardData.cardInfo.location || "xyx company"}  </p>
+          </div>
+         </div> 
+  
+         {userLogin &&
+         <div onClick={()=> router.push('../auth/login')} className="px-4 py-2 border flex justify-center cursor-pointer  items-center gap-5 h-12 border-dashed border-white text-white rounded-xl text-center">
+            <h1> Add Social Media  </h1> <CirclePlus />
+          </div> }
+
+
+         {/* // prosanl info section */}
+                 <a href={`tel:+91${cardData.contactInfo.phone || "8080973373"}`} target="_blank" rel="noopener noreferrer">
+                 <div className="bg-white p-4 rounded-2xl shadow-lg flex items-center my-10 mb-0 justify-between hover:scale-[1.02] transition cursor-pointer ">
+                 {/* Left side: Image + Text */}
+                  <div className="flex items-center gap-3">
+                    <Image src="/mobile_phone.png" width={50} height={50} alt="nfc card" />
+                     <div>
+                   <p className="text-gray-800 font-semibold text-lg">Phone</p>
+                   <p className="text-gray-400">+91 {cardData.contactInfo.phone || "8080973373"}</p>
+                   </div>
+                   </div>
+                   
+        
+                 {/* Right side: Arrow Image */}
+                 
+                 <Image src="/right-up-allow.png" width={25} height={25} alt="arrow" />
+                </div>
+                </a>
+        
+                <a href={`mailto:${cardData.contactInfo.email || "demo@email.com"}`} target="_blank" rel="noopener noreferrer">  
+                <div className="bg-white p-4 rounded-2xl shadow-lg flex items-center justify-between my-5 hover:scale-[1.02] transition cursor-pointer  ">
+                 {/* Left side: Image + Text */}
+                  <div className="flex items-center gap-3">
+                  <Image src="/gmail.png" width={50} height={50} alt="nfc card" />
+                   <div>
+                  <p className="text-gray-800 font-semibold text-lg">Email</p>
+                  <p className="text-gray-400">{cardData.contactInfo.email || "xyz@mail.com"}</p>
+                   </div>
+                   </div>
+        
+                 {/* Right side: Arrow Image */}
+                
+                 <Image src="/right-up-allow.png" width={25} height={25} alt="arrow" />
+                
+                </div>
+                </a>
+        
+                <a href={cardData.contactInfo.linkedin || "#"} target="_blank" rel="noopener noreferrer">
+                <div className="bg-white p-4 rounded-2xl shadow-lg flex items-center justify-between my-5 hover:scale-[1.02] transition cursor-pointer">
+                 {/* Left side: Image + Text */}
+                  <div className="flex items-center gap-3">
+                  <Image src="/linkedin.png" width={50} height={50} alt="nfc card" />
+                   <div>
+                  <p className="text-gray-800 font-semibold text-lg">Linkedin</p>
+                  <p className="text-gray-400">
+                {cardData.contactInfo.linkedin ? cardData.contactInfo.linkedin.length > 25 ? cardData.contactInfo.linkedin.slice(0, 25) + "..."
+              : cardData.contactInfo.linkedin: "https://www.linkedin.com/xyz"}</p>
+                   </div>
+                   </div>
+        
+                 {/* Right side: Arrow Image */}
+                 
+                 <Image src="/right-up-allow.png" width={25} height={25} alt="arrow" />
+                </div>
+                </a>
+        
+                <a href={cardData.contactInfo?.website || "#"} target="_blank" rel="noopener noreferrer">
+                <div className="bg-white p-4 rounded-2xl  shadow-lg flex items-center justify-between my-5 hover:scale-[1.02] transition cursor-pointer">
+                 {/* Left side: Image + Text */}
+                  <div className="flex items-center gap-3">
+                  <Image src="/webside.png" width={50} height={50} alt="nfc card" />
+                   <div>
+                  <p className="text-gray-800 font-semibold text-lg">Webside</p>
+                  <p className="text-gray-400">{cardData.contactInfo?.webside ? cardData.contactInfo?.website.length > 25 ? cardData.contactInfo.linkedin.slice(0, 25) + "..."
+              : cardData.contactInfo.website: "https://www.xyz.com/"}</p>
+                   </div>
+                   </div>
+        
+                 {/* Right side: Arrow Image */}
+                 
+                 <Image src="/right-up-allow.png" width={25} height={25} alt="arrow" />
+                </div>
+                </a>
+
+  
+                {cardData.socialMedia && (
+  <div className="flex flex-col items-center gap-6 my-10 ">
+     <div className="px-4 py-2 border w-full flex justify-center  items-center gap-5 h-12 border-dashed border-white text-white rounded-xl text-center">
+            <h1>  Social Media  </h1>     <ChevronsDown />
+          </div>
+
+    {[
+      { name: "Instagram", icon: "/instagram.png", value: cardData.socialMedia.instagram },
+      { name: "Website", icon: "/facebook.png", value: cardData.socialMedia.website },
+      { name: "Twitter", icon: "/twitter.png", value: cardData.socialMedia.twitter },
+    ].map((item, index) => (
+      <a
+        key={index}
+        href={item.value || "#"}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-white p-4 rounded-2xl shadow-lg flex items-center justify-between w-full max-w-md hover:scale-[1.02] transition cursor-pointer"
+      >
+        {/* Left Side */}
+        <div className="flex  gap-3">
+          <Image src={item.icon} width={50} height={50} alt={item.name} />
+          <div>
+            <p className="text-gray-800 font-semibold text-lg">{item.name}</p>
+            <p className="text-gray-400 max-w-[180px] truncate">
+              {item.value || "Not added"}
+            </p>
+          </div>
         </div>
-        {/* Profile Image */}
-        <div
-          className="absolute bg-gray-400 -bottom-12 left-1/2 transform -translate-x-1/2 flex items-center justify-center w-24 h-24 rounded-full border-2"
-          style={{ borderColor: cardData.borderColor || "#fff" }}
-        >
-         {getInitials(cardData?.cardInfo.name || "")}
-            
-        </div>
-      </div>
-  
-      {/* Profile Info */}
-      <div className="pt-12 pb-6 px-6 text-center">
-        <h2 className="text-2xl text-gray-900 ">{cardData.cardInfo.name || "Jane Cooper"}</h2>
-        <p className="text-md text-gray-600">{cardData.cardInfo.headline}</p>
-        <p className="text-md text-gray-600">{cardData.cardInfo.location}</p>
-  
-        {/* Open Hours */}
-        <div className="mt-5">
-          <span className="bg-green-100 text-green-700 text-xs font-medium px-5 py-2 rounded-md ">
-            Open 9AM – 6PM
-          </span>
-        </div>
-  
-        {/* Save Contact Button */}
-        <button className="mt-4 bg-amber-600 text-white shadow-md font-semibold px-6 py-2 rounded-md shadow hover:bg-amber-700 transition">
-          Save Contact
-        </button>
-      </div>
-  
-      {/* Contact & Social Section */}
-<div className="bg-gray-100 px-6 pb-8 space-y-4">
 
-{/* Phone */}
-<div className="flex items-center justify-between bg-white rounded-xl shadow p-3">
-  <div className="flex items-center">
-    <img src="https://img.icons8.com/ios-filled/50/26e07f/phone.png" className="w-6 h-6 mr-3" />
-    <div>
-      <p className="text-gray-800 font-semibold">Phone</p>
-      <p className="text-sm text-gray-600">+91 {cardData.contactInfo.phone || "8080973373"}</p>
-    </div>
-  </div>
-  <a href={`tel:+91${cardData.contactInfo.phone || "8080973373"}`} target="_blank" rel="noopener noreferrer">
-    <ExternalLink className="w-5 h-5 text-gray-500" />
-  </a>
-</div>
-
-{/* Email */}
-<div className="flex items-center justify-between bg-white rounded-xl shadow p-3">
-  <div className="flex items-center">
-    <img src="https://img.icons8.com/ios-filled/50/4e91fc/new-post.png" className="w-6 h-6 mr-3" />
-    <div>
-      <p className="text-gray-800 font-semibold">Email</p>
-      <p className="text-sm text-gray-600">{cardData.contactInfo.email || "demo@email.com"}</p>
-    </div>
-  </div>
-  <a href={`mailto:${cardData.contactInfo.email || "demo@email.com"}`} target="_blank" rel="noopener noreferrer">
-    <ExternalLink className="w-5 h-5 text-gray-500" />
-  </a>
-</div>
-
-{/* LinkedIn */}
-<div className="flex items-center justify-between bg-white rounded-xl shadow p-3">
-  <div className="flex items-center">
-    <img src="https://img.icons8.com/ios-filled/50/0077b5/linkedin.png" className="w-6 h-6 mr-3" />
-    <div>
-      <p className="text-gray-800 font-semibold">LinkedIn</p>
-      <p className="text-sm text-gray-600 truncate">{cardData.contactInfo.linkedin || "linkedin.com/in/demo"}</p>
-    </div>
-  </div>
-  <a href={cardData.contactInfo.linkedin || "#"} target="_blank" rel="noopener noreferrer">
-    <ExternalLink className="w-5 h-5 text-gray-500" />
-  </a>
-</div>
-
-
-
-{/* Social Media */}
-<div>
-  <p className="text-sm font-semibold text-gray-700 mb-2">Social Media Links</p>
-  <div className="space-y-2">
-
-    {/* Instagram */}
-    {cardData.socialMedia?.instagram && (
-      <div className="flex items-center justify-between bg-white rounded-xl p-3 text-gray-800 font-medium shadow hover:bg-gray-200 transition">
-      <div className="flex items-center gap-2">
-        <Instagram className="w-5 h-5 text-pink-500" />
-        <span>Instagram</span>
-      </div>
-      <a href={cardData.socialMedia.instagram} target="_blank" rel="noopener noreferrer">
-        <ExternalLink className="w-5 h-5 text-gray-500" />
+        {/* Right Side - Edit or Arrow */}
+        {userLogin ? (
+          <SquarePen
+            onClick={(e) => e.preventDefault()} // Prevent link opening while editing
+            className="text-black"
+          />
+        ) : (
+          <Image src="/right-up-allow.png" width={25} height={25} alt="arrow" />
+        )}
       </a>
-      </div>
-    )}
-
-    {/* Facebook */}
-    {cardData.socialMedia?.facebook && (
-      <div className="flex items-center justify-between bg-white rounded-xl p-3 text-gray-800 font-medium shadow hover:bg-gray-200 transition">
-      <div className="flex items-center gap-2">
-        <Facebook className="w-5 h-5 text-blue-600" />
-        <span>Facebook</span>
-      </div>
-      <a href={cardData.socialMedia.facebook} target="_blank" rel="noopener noreferrer">
-        <ExternalLink className="w-5 h-5 text-gray-500" />
-      </a>
-      </div>
-    )}
-
-    {/* Twitter */}
-    {cardData.socialMedia?.twitter && (
-      <div className="flex items-center justify-between bg-white rounded-xl p-3 text-gray-800 font-medium shadow hover:bg-gray-200 transition">
-        <div className="flex items-center gap-2">
-          <img src="https://img.icons8.com/ios-filled/50/1DA1F2/twitter.png" className="w-5 h-5" />
-          <span>Twitter</span>
-        </div>
-        <a href={cardData.socialMedia.twitter} target="_blank" rel="noopener noreferrer">
-          <ExternalLink className="w-5 h-5 text-gray-500" />
-        </a>
-      </div>
-    )}
-
-
+    ))}
   </div>
-</div>
-</div>
+)}
 
+
+
+
+
+    <p className="text-gray-400 text-center my-10 mb-0 text-sm">Powered by </p>
+              <h1 className=" text-2xl font-bold text-gray-400 text-center">Pixel card</h1>
+    
+             <div className=" flex justify-center items-center">
+              <p className=" underline text-center my-10">Get your pixel card </p>
+              <Image src="/right-up-allow.png" width={25} height={25} alt="arrow" />
+              </div>
     </div>
   </div>
+      
   
   
   );
