@@ -70,7 +70,7 @@ export default function EditContactForm({
   return (
     <div className="relative">
       {/* Profile Card */}
-      <div className="w-full h-56 border border-amber-50 rounded-2xl my-20 mb-10 bg-white relative">
+      <div className="w-full h-56 border shadow-xl border-amber-50 rounded-2xl my-20 mb-10 bg-white relative">
         <div className="flex justify-center">
           <div className="w-36 h-36 bg-gray-400 rounded-full border-4 border-white -mt-16 flex justify-center items-center relative">
             <h1 className="text-white text-3xl">{getInitials(displayData.name)}</h1>

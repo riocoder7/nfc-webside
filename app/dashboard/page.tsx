@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { onAuthStateChanged, getAuth } from "firebase/auth";
+import { onAuthStateChanged, getAuth, signOut } from "firebase/auth";
 import { app, db } from "../../config/firebase_config"; // your Firebase config
-import { ChevronsDown, CirclePlus, SquarePen } from "lucide-react";
+import { ChevronsDown, CirclePlus, LogOut, SquarePen } from "lucide-react";
 import { doc, DocumentData, getDoc, updateDoc } from "firebase/firestore";
 import EditContactForm from "../../component/EditContactForm";
 import EditSocialMediaForm from "../../component/EditSocialMedia";
@@ -86,11 +86,21 @@ export default function Page() {
 
   /* ------------------------------- UTILITIES --------------------------------- */
 
+  const handleLogout = () => {
+    if (confirm("Are you sure you want to logout?")) {
+      signOut(authInstance)
+        .then(() => {
+          router.push("../auth/login"); // redirect after logout
+        })
+        .catch((err) => console.error(err));
+    }
+  };
 
   if (loading) return <p className="text-center mt-10">Loading... </p>;
   return(
     <div className=" flex justify-center items-center bg-gray-50">
-      <div className="w-[420px] bg-[#111922]  p-2"> Dashboard 
+      <div className="w-[420px] bg-gradient-to-b from-[#BDDCFF] to-[#E5F1FA]  p-2"> 
+        <div className=" flex justify-between pl-5 pr-5"> <h1> Dashboard </h1> <div onClick={handleLogout} className="bg-red-400 p-3 font-bold rounded-lg flex gap-2">Logout  <LogOut /></div></div>
         
       <EditCardDetails cardData={cardData}  userLogin={userLogin} userId={userData.uid} />
 
@@ -106,11 +116,6 @@ export default function Page() {
       <section >
           <p className="text-gray-400 text-center my-10 mb-0">Powered by </p>
           <h1 className=" text-2xl font-bold text-gray-400 text-center">Pixel card</h1>
-
-         <div className=" flex justify-center items-center">
-          <p className=" underline text-center my-10">Get your pixel card </p>
-          <Image src="/right-up-allow.png" width={25} height={25} alt="arrow" />
-          </div>
       </section>
 
 

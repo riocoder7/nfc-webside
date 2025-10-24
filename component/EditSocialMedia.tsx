@@ -16,7 +16,7 @@ export default function EditSocialMediaForm({ userLogin, cardData }: EditContact
   const socialMediaList = [
     { name: "Instagram", key: "instagram", icon: "/instagram.png" },
     { name: "Facebook", key: "facebook", icon: "/facebook.png" },
-    { name: "Twitter", key: "twitter", icon: "/twitter.png" },
+    { name: "X", key: "X", icon: "/twitter.png" },
   ];
 
   const [showForm, setShowForm] = useState(false);
@@ -64,8 +64,8 @@ export default function EditSocialMediaForm({ userLogin, cardData }: EditContact
     <div>
 
          {userLogin && !cardData.socialMedia &&
-                 <div onClick={() => setShowForm(true)} className="px-4 py-2 border flex justify-center  items-center gap-5 h-12 border-dashed border-white text-white rounded-xl text-center">
-                    <h1> Add Social Media  </h1> <CirclePlus />
+                 <div onClick={() => setShowForm(true)} className="px-4 py-2 border-2 flex justify-center cursor-pointer  items-center gap-5 h-12 border-dashed border-black text-black text-lg rounded-xl text-center">
+                    <h1 className="test-black"> Add Social Media  </h1> <CirclePlus />
                   </div> }
       {/* Slide-Up Form */}
       <section>
@@ -109,7 +109,7 @@ export default function EditSocialMediaForm({ userLogin, cardData }: EditContact
         
       <> 
         {userLogin && (
-          <div className="px-4 py-2 border flex justify-center items-center gap-5 h-12 border-dashed border-white text-white rounded-xl text-center">
+          <div className="px-4 py-2  flex justify-center items-center gap-5 h-12 border-dashed border-black border-2 text-black text-lg rounded-xl text-center">
             <h1>Social Media</h1> <ChevronsDown />
           </div>
         )}
@@ -151,7 +151,7 @@ export default function EditSocialMediaForm({ userLogin, cardData }: EditContact
           <div className="flex items-center gap-3">
             <Image src="/twitter.png" width={50} height={50} alt="twitter" />
             <div>
-              <p className="text-gray-800 font-semibold text-lg">Twitter</p>
+              <p className="text-gray-800 font-semibold text-lg">X</p>
               <p className="text-gray-400">
                 {cardData.socialMedia?.twitter || "https://www.twitter.com/xyz"}
               </p>

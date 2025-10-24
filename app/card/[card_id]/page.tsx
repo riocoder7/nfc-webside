@@ -109,25 +109,25 @@ export default function CardPage() {
 
   return (
     <div className="min-h-screen bg-white flex justify-center items-center  ">
-    <div className="bg-[#111922]   w-full max-w-md  overflow-hidden p-2 shadow-lg">
+    <div className="bg-gradient-to-b from-[#BDDCFF] to-[#E5F1FA]    w-full max-w-md  overflow-hidden p-2 shadow-lg">
   
 
-      <div className="w-full h-56 border border-amber-50 rounded-2xl  my-20 mb-10 bg-white" > 
+      <div className="w-full h-56 border border-amber-50 rounded-2xl shadow-xl  my-20 mb-10 bg-white" > 
           <div className="flex justify-center"> 
-          <div className="w-36 h-36 bg-gray-400 rounded-full border border-white border-w-2 my-[-60px] flex justify-center items-center"> 
+          <div className="w-36 h-36 bg-gray-400 border-5 rounded-full  border-white border-w-2 my-[-60px] flex justify-center items-center"> 
             <h1 className=" text-white text-3xl ">{getInitials(cardData?.cardInfo.name || "")}</h1>
           </div>
           </div>
 
           <div className="flex flex-col justify-center items-center mt-12">
           <h1 className=" text-black text-2xl font-bold mt-4">{cardData.cardInfo.name || "Jane Cooper"}</h1>
-          <p className=" text-black text-sm mt-1"> {cardData.cardInfo.headline|| "Web Developer | Designer"}</p>
+          <p className=" text-black text-md mt-1"> {cardData.cardInfo.headline|| "Web Developer | Designer"}</p>
           <p className="text-black text-sm mt-2">{cardData.cardInfo.location || "xyx company"}  </p>
           </div>
          </div> 
   
-         {userLogin &&
-         <div onClick={()=> router.push('../auth/login')} className="px-4 py-2 border flex justify-center cursor-pointer  items-center gap-5 h-12 border-dashed border-white text-white rounded-xl text-center">
+         {userLogin && cardData.socialMedia==null &&
+         <div onClick={()=> router.push('/dashboard')} className="px-4 py-2 border-2 flex justify-center cursor-pointer  items-center gap-5 h-12 border-dashed border-black text-black text-lg rounded-xl text-center">
             <h1> Add Social Media  </h1> <CirclePlus />
           </div> }
 
@@ -255,12 +255,8 @@ export default function CardPage() {
 
 
     <p className="text-gray-400 text-center my-10 mb-0 text-sm">Powered by </p>
-              <h1 className=" text-2xl font-bold text-gray-400 text-center">Pixel card</h1>
-    
-             <div className=" flex justify-center items-center">
-              <p className=" underline text-center my-10">Get your pixel card </p>
-              <Image src="/right-up-allow.png" width={25} height={25} alt="arrow" />
-              </div>
+      <h1 className=" text-2xl font-bold text-gray-400 text-center mb-5">Pixel card</h1>
+
     </div>
   </div>
       
